@@ -104,7 +104,7 @@ def generate_jawiki_ut
 
 		# ファイルをロックして書き込む
 		$dicfile.flock(File::LOCK_EX)
-		$dicfile.puts yomi + "	0	0	6000	" + hyouki
+		$dicfile.puts yomi + "	" + $id_mozc + "	" + $id_mozc + "	6000	" + hyouki
 		$dicfile.flock(File::LOCK_UN)
 		return
 	end
