@@ -5,7 +5,7 @@ date: 2023-01-15
 
 ## Overview
 
-Mozc UT Jawiki Dictionary is a dictionary converted from [ja.wikipedia](https://ja.wikipedia.org/) for Mozc.
+Mozc UT Jawiki Dictionary is a dictionary generated from [ja.wikipedia](https://ja.wikipedia.org/) for Mozc.
 
 Thanks to the ja.wikipedia team.
 
