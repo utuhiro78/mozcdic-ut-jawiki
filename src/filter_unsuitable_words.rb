@@ -16,7 +16,7 @@ end
 filename = ARGV[0]
 dicname = filename
 
-# Mozc形式の辞書を読み込む
+# Mozc 形式の辞書を読み込む
 # なかいまさひろ	1917	1917	6477	中居正広
 file = File.new(filename, "r")
 	lines = file.read.split("\n")

@@ -16,5 +16,5 @@ ruby apply_cost.rb mozcdic-ut-jawiki.txt
 tar cjf mozcdic-ut-jawiki.txt.tar.bz2 mozcdic-ut-jawiki.txt
 mv mozcdic-ut-jawiki.txt* ../
 
-rm -rf mozcdic-ut-jawiki-release/
-rsync -a ../* mozcdic-ut-jawiki-release --exclude=jawiki-* --exclude=mecab-* --exclude=mozcdic-ut-*.txt
+rm -rf ../../mozcdic-ut-jawiki-release/
+rsync -a ../* ../../mozcdic-ut-jawiki-release --exclude=jawiki-* --exclude=mecab-* --exclude=mozcdic-ut-*.txt

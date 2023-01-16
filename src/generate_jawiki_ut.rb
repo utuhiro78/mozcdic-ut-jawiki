@@ -88,8 +88,8 @@ def generate_jawiki_ut
 		return
 	end
 
-	# 読みにならない文字「!?」などを削除したhyouki2を作る
-	hyouki2 = hyouki.tr('!?=:・。', '')
+	# 読みにならない文字「 」「!?」などを削除したhyouki2を作る
+	hyouki2 = hyouki.tr('\ \.\!\?\-\+\*\=\:\/・。×★☆', '')
 
 	# hyouki2が1文字の場合はスキップ
 	if hyouki2[1] == nil
@@ -212,7 +212,6 @@ dicname = "mozcdic-ut-jawiki.txt"
 # Mozc の一般名詞のID
 $id_mozc = "1847"
 
-# 既存の mozcdic-ut-jawiki.txt のバージョンを確認
 `wget https://dumps.wikimedia.org/jawiki/latest/ -O jawiki-index.html`
 
 file = File.new("jawiki-index.html", "r")
@@ -223,13 +222,7 @@ jawiki_date = jawiki_index.split('jawiki-latest-pages-articles.xml.bz2</a>      
 jawiki_index = ""
 jawiki_date = jawiki_date.split(" ")[0]
 
-if FileTest.exist?("_mozcdic_ut_date_" + jawiki_date) == true
-	puts "mozcdic-ut-jawiki.txt is up to date."
-	exit
-else
-	`rm -f _mozcdic_ut_date_*`
-	`wget -N https://dumps.wikimedia.org/jawiki/latest/jawiki-latest-pages-articles.xml.bz2`
-end
+`wget -N https://dumps.wikimedia.org/jawiki/latest/jawiki-latest-pages-articles.xml.bz2`
 
 # Parallel のプロセス数を「物理コア数 - 1」にする
 core_num = `grep cpu.cores /proc/cpuinfo`.chomp.split(": ")[-1].to_i - 1
@@ -272,6 +265,3 @@ lines = lines.uniq.sort
 file = File.new(dicname, "w")
 		file.puts lines
 file.close
-
-# mozcdic-ut-jawiki.txt のバージョンを書き込む
-`touch "_mozcdic_ut_date_#{jawiki_date}"`
