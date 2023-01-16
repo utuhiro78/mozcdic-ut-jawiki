@@ -11,7 +11,7 @@ Thanks to the Japanese Wikipedia team.
 
 ## License
 
-mozcdic-jawiki-ut.txt: [CC BY-SA 3.0](https://ja.wikipedia.org/wiki/Wikipedia:ウィキペディアを二次利用する)
+mozcdic-ut-jawiki.txt: [CC BY-SA 3.0](https://ja.wikipedia.org/wiki/Wikipedia:ウィキペディアを二次利用する)
 
 Source code: Apache License, Version 2.0
 
