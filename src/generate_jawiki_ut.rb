@@ -104,7 +104,7 @@ def generate_jawiki_ut
 
 		# ファイルをロックして書き込む
 		$dicfile.flock(File::LOCK_EX)
-		s = [yomi, $id_mozc, $id_mozc, "6000", hyouki]
+		s = [yomi, $id_mozc, $id_mozc, "8000", hyouki]
 		$dicfile.puts s.join("	")
 		$dicfile.flock(File::LOCK_UN)
 		return
@@ -198,7 +198,7 @@ def generate_jawiki_ut
 
 		# ファイルをロックして書き込む
 		$dicfile.flock(File::LOCK_EX)
-		s = [yomi, $id_mozc, $id_mozc, "6000", hyouki]
+		s = [yomi, $id_mozc, $id_mozc, "8000", hyouki]
 		$dicfile.puts s.join("	")
 		$dicfile.flock(File::LOCK_UN)
 		return
