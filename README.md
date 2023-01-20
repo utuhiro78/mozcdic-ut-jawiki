@@ -25,8 +25,6 @@ cat ../mozc-master/src/data/dictionary_oss/dictionary00.txt mozcdic-ut-*.txt > d
 mv dictionary00.txt.new ../mozc-master/src/data/dictionary_oss/dictionary00.txt
 ```
 
-Except for mozcdic-ut-jawiki, the costs for words are not modified by jawiki-latest-all-titles.
-
 To modify the costs for words or merge multiple UT dictionaries into one, use this tool:
 
 [merge-ut-dictionaries](https://github.com/utuhiro78/merge-ut-dictionaries)
