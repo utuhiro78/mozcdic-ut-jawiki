@@ -195,6 +195,7 @@ def generate_jawiki_ut
 		# 表記のHTML特殊文字を変換
 		hyouki = hyouki.gsub('&amp;', '&')
 		hyouki = hyouki.gsub('&quot;', '"')
+		hyouki = hyouki.gsub('&#39;', "'")
 
 		# ファイルをロックして書き込む
 		$dicfile.flock(File::LOCK_EX)
