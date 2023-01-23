@@ -29,7 +29,7 @@ To modify the costs for words or merge multiple UT dictionaries into one, use th
 
 [merge-ut-dictionaries](https://github.com/utuhiro78/merge-ut-dictionaries)
 
-## If you create your own UT dictionary
+## Update this dictionary with the latest stuff
 
 Requirement(s): ruby, rsync
 
