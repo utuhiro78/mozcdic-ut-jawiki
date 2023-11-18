@@ -1,8 +1,3 @@
----
-title: Mozc UT Jawiki Dictionary
-date: 2023-01-15
----
-
 ## Overview
 
 Mozc UT Jawiki Dictionary is a dictionary generated from the [Japanese Wikipedia](https://ja.wikipedia.org/) for Mozc.
