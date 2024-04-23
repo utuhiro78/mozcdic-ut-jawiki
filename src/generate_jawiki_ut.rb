@@ -211,7 +211,7 @@ end
 dicname = "mozcdic-ut-jawiki.txt"
 
 # Mozc の一般名詞のID
-$id_mozc = "1847"
+$id_mozc = "1843"
 
 `wget https://dumps.wikimedia.org/jawiki/latest/ -O jawiki-index.html`
 
