@@ -105,7 +105,9 @@ def generate_jawiki_ut
 
 	lines.length.times do |i|
 		# テンプレートを削除
-		if lines[i][0] == "{" ||
+		# 収録語は「'''盛夏'''（せいか）」が最小
+		if lines[i][12] == nil ||
+		lines[i][0] == "{" ||
 		lines[i][0] == "}" ||
 		lines[i][0] == "|" ||
 		lines[i][0] == "*"
