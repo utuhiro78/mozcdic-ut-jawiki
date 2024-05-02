@@ -105,7 +105,7 @@ def generate_jawiki_ut
 
 	lines.length.times do |i|
 		# テンプレートを削除
-		# 収録語は「'''盛夏'''（せいか）」が最小
+		# 収録語は「'''盛夏'''（せいか）」が最小なので、12文字以下の行はスキップ
 		if lines[i][12] == nil ||
 		lines[i][0] == "{" ||
 		lines[i][0] == "}" ||
