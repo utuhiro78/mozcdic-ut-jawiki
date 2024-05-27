@@ -4,9 +4,10 @@
 # Author: UTUMI Hirosi (utuhiro78 at yahoo dot co dot jp)
 # License: Apache License, Version 2.0
 
-require 'parallel'
 require 'bzip2/ffi'
+require "cgi"
 require 'nkf'
+require 'parallel'
 
 # ==============================================================================
 # Wikipediaの記事の例
@@ -84,10 +85,11 @@ def generate_jawiki_ut
 		yomi = NKF.nkf("--hiragana -w -W", hyouki2)
 		yomi = yomi.tr("ゐゑ", "いえ")
 
+		s = [yomi, $id_mozc, $id_mozc, "8000", hyouki]
+
 		# ファイルをロックして書き込む
 		$dicfile.flock(File::LOCK_EX)
-		s = [yomi, $id_mozc, $id_mozc, "8000", hyouki]
-		$dicfile.puts s.join("	")
+			$dicfile.puts s.join("	")
 		$dicfile.flock(File::LOCK_UN)
 		return
 	end
@@ -136,18 +138,27 @@ def generate_jawiki_ut
 		# 全角英数を半角に変換してUTF-8で出力
 		s = NKF.nkf("-m0Z1 -W -w", s)
 
-		# 「<ref 」から「</ref>」までを削除
-		# '''皆藤 愛子'''<ref>一部のプロフィールが</ref>(かいとう あいこ、[[1984年]]
-		# '''大倉 忠義'''（おおくら ただよし<ref name="oricon"></ref>、[[1985年]]
-		if s.index("&lt;ref") != nil
-			s = s.sub(/&lt;ref.*?&lt;\/ref&gt;/, "")
+		# HTML特殊文字を変換
+		s = CGI.unescapeHTML(s)
+
+		# 「{{」から「}}」までを削除
+		# '''皆藤 愛子'''{{efn2|一部のプロフィールが「皆'''籐'''（たけかんむり）」となっているが、「皆'''藤'''（くさかんむり）」が正しい。}}（かいとう あいこ、[[1984年]][[1月25日]] - ）は、
+		if s.index("{{") != nil
+			s = s.gsub(/{{.*?}}/, "")
 		end
+
+		# 「<ref」から「</ref>」までを削除
+		# '''井上 陽水'''（いのうえ ようすい<ref name="FMPJ">{{Cite web|和書|title=アーティスト・アーカイヴ 井上陽水 {{small|イノウエヨウスイ}}|url=https://www.kiokunokiroku.jp/artistarchives|work=記憶の記録 LIBRARY|publisher=[[日本音楽制作者連盟]]|accessdate=2023-06-21}}</ref>、[[1948年]]
+		s = s.gsub(/<ref.*?<\/ref>/, "")
+
+		# 「<ref name="example" />」を削除
+		s = s.gsub(/<ref\ name.*?\/>/, "")
 
 		# スペースと「'"「」『』」を削除
 		# '''皆藤 愛子'''(かいとう あいこ、[[1984年]]
 		s = s.tr(" '\"「」『』", "")
 
-		# 「表記(読み」を検索
+		# 「表記(読み」から読みを取得
 		yomi = s.split(hyouki + "(")[1]
 
 		if yomi == nil
@@ -167,7 +178,7 @@ def generate_jawiki_ut
 		yomi = yomi.split("、")[0].to_s
 
 		# 読みを「/」で切る
-		# '''卑弥呼'''（ひみこ/ひめこ、
+		# ひみこ/ひめこ
 		yomi = yomi.split("/")[0].to_s
 
 		# 読みが2文字以下の場合はスキップ
@@ -192,15 +203,11 @@ def generate_jawiki_ut
 			next
 		end
 
-		# 表記のHTML特殊文字を変換
-		hyouki = hyouki.gsub('&amp;', '&')
-		hyouki = hyouki.gsub('&quot;', '"')
-		hyouki = hyouki.gsub('&#39;', "'")
+		s = [yomi, $id_mozc, $id_mozc, "8000", hyouki]
 
 		# ファイルをロックして書き込む
 		$dicfile.flock(File::LOCK_EX)
-		s = [yomi, $id_mozc, $id_mozc, "8000", hyouki]
-		$dicfile.puts s.join("	")
+			$dicfile.puts s.join("	")
 		$dicfile.flock(File::LOCK_UN)
 		return
 	end
@@ -243,6 +250,9 @@ while jawiki = reader.read(500000000)
 
 	# 記事の断片をキープ
 	jawiki_fragment = jawiki[-1]
+
+	# 記事の断片を削除
+	jawiki = jawiki[0..-2]
 
 	puts "Writing..."
 
