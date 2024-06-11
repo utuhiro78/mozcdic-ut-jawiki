@@ -7,6 +7,7 @@
 require 'bzip2/ffi'
 require "cgi"
 require 'nkf'
+require 'open-uri'
 require 'parallel'
 
 # ==============================================================================
@@ -220,7 +221,9 @@ end
 dicname = "mozcdic-ut-jawiki.txt"
 
 # Mozc の一般名詞のID
-$id_mozc = "1843"
+url = "https://raw.githubusercontent.com/google/mozc/master/src/data/dictionary_oss/id.def"
+$id_mozc = URI.open(url).read.split(" 名詞,一般,")[0]
+$id_mozc = $id_mozc.split("\n")[-1]
 
 `wget https://dumps.wikimedia.org/jawiki/latest/ -O jawiki-index.html`
 
