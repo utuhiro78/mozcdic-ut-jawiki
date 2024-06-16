@@ -225,17 +225,11 @@ url = "https://raw.githubusercontent.com/google/mozc/master/src/data/dictionary_
 $id_mozc = URI.open(url).read.split(" 名詞,一般,")[0]
 $id_mozc = $id_mozc.split("\n")[-1]
 
-`wget https://dumps.wikimedia.org/jawiki/latest/ -O jawiki-index.html`
+url = "https://dumps.wikimedia.org/jawiki/"
+jawiki_date = URI.open(url).read.split("<a href=\"")[-2]
+jawiki_date = jawiki_date.split("/")[0]
 
-file = File.new("jawiki-index.html", "r")
-	jawiki_index = file.read
-file.close
-
-jawiki_date = jawiki_index.split('jawiki-latest-pages-articles.xml.bz2</a>               ')[1]
-jawiki_index = ""
-jawiki_date = jawiki_date.split(" ")[0]
-
-`wget -N https://dumps.wikimedia.org/jawiki/latest/jawiki-latest-pages-articles.xml.bz2`
+`wget -N https://dumps.wikimedia.org/jawiki/#{jawiki_date}/jawiki-#{jawiki_date}-pages-articles-multistream.xml.bz2`
 
 # Parallel のプロセス数を「物理コア数 - 1」にする
 core_num = `grep cpu.cores /proc/cpuinfo`.chomp.split(": ")[-1].to_i - 1
@@ -243,7 +237,7 @@ core_num = `grep cpu.cores /proc/cpuinfo`.chomp.split(": ")[-1].to_i - 1
 $dicfile = File.new(dicname, "w")
 jawiki_fragment = ""
 
-reader = Bzip2::FFI::Reader.open('jawiki-latest-pages-articles.xml.bz2')
+reader = Bzip2::FFI::Reader.open('jawiki-' + jawiki_date + '-pages-articles-multistream.xml.bz2')
 
 puts "Reading..."
 
