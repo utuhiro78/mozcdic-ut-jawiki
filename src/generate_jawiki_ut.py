@@ -62,15 +62,15 @@ def generate_jawiki_ut(article):
 	# 表記にスペースがある場合はスキップ
 	# （記事のスペースを削除してから「表記(読み」を検索するので、残してもマッチしない）
 	if len(hyouki) > 25 or \
-			"(曖昧さ回避)" in hyouki or \
-			"Wikipedia:" in hyouki or \
-			"ファイル:" in hyouki or \
-			"Portal:" in hyouki or \
-			"Help:" in hyouki or \
-			"Template:" in hyouki or \
-			"Category:" in hyouki or \
-			"プロジェクト:" in hyouki or \
-			" " in hyouki:
+	"(曖昧さ回避)" in hyouki or \
+	"Wikipedia:" in hyouki or \
+	"ファイル:" in hyouki or \
+	"Portal:" in hyouki or \
+	"Help:" in hyouki or \
+	"Template:" in hyouki or \
+	"Category:" in hyouki or \
+	"プロジェクト:" in hyouki or \
+	" " in hyouki:
 		return
 
 	# 読みにならない文字「!?」などを削除したhyouki2を作る
@@ -86,11 +86,11 @@ def generate_jawiki_ut(article):
 		yomi = jaconv.kata2hira(hyouki2)
 		yomi = yomi.translate(str.maketrans('ゐゑ', 'いえ'))
 
-		s = [yomi, id_mozc, id_mozc, "8000", hyouki]
+		entry = [yomi, id_mozc, id_mozc, "8000", hyouki]
 
 		with open(dicname, "a", encoding="utf-8") as dicfile:
 			fcntl.flock(dicfile, fcntl.LOCK_EX)
-			dicfile.write("\t".join(s))
+			dicfile.write("\t".join(entry))
 			dicfile.write("\n")
 			fcntl.flock(dicfile, fcntl.LOCK_UN)
 		return
@@ -103,66 +103,66 @@ def generate_jawiki_ut(article):
 	lines = article.replace("}}'''", "}}\n'''")
 	lines = lines.splitlines()
 
-	s = []
+	entry = []
 	p = 0
 
 	for i in range(len(lines)):
 		# テンプレートを削除
 		# 収録語は「'''盛夏'''（せいか）」が最小なので、12文字以下の行はスキップ
 		if len(lines[i]) < 13 or \
-				lines[i][0] == "{" or \
-				lines[i][0] == "}" or \
-				lines[i][0] == "|" or \
-				lines[i][0] == "*":
+		lines[i][0] == "{" or \
+		lines[i][0] == "}" or \
+		lines[i][0] == "|" or \
+		lines[i][0] == "*":
 			continue
 
-		s.append(lines[i])
+		entry.append(lines[i])
 		p = p + 1
 
 		# 記事の量を減らす
 		if p > 99:
 			break
 
-	lines = s
-	s = ""
+	lines = entry
+	entry = ""
 
 	# ==============================================================================
 	# 記事から読みを作る
 	# ==============================================================================
 
 	for i in range(len(lines)):
-		s = lines[i]
+		entry = lines[i]
 
 		# 全角英数を半角に変換
-		s = unicodedata.normalize('NFKC', s)
+		entry = unicodedata.normalize('NFKC', entry)
 
 		# HTML特殊文字を変換
-		s = html.unescape(s)
+		entry = html.unescape(entry)
 
 		# 「{{」から「}}」までを削除
 		# '''皆藤 愛子'''{{efn2|一部のプロフィールが「皆'''籐'''（たけかんむり）」と
 		# なっているが、「皆'''藤'''（くさかんむり）」が正しい。}}（かいとう あいこ、
 		# [[1984年]][[1月25日]] - ）は、
-		if "{{" in s:
-			s = re.sub(r'{{.*?}}', '', s)
+		if "{{" in entry:
+			entry = re.sub(r'{{.*?}}', '', entry)
 
 		# 「<ref」から「</ref>」までを削除
 		# '''井上 陽水'''（いのうえ ようすい<ref name="FMPJ">{{Cite web|和書|title=
 		# アーティスト・アーカイヴ 井上陽水 {{small|イノウエヨウスイ}}|url=
 		# https://www.kiokunokiroku.jp/artistarchives|work=記憶の記録 LIBRARY|
 		# publisher=[[日本音楽制作者連盟]]|accessdate=2023-06-21}}</ref>、[[1948年]]
-		s = re.sub(r'<ref.*?<\/ref>', '', s)
+		entry = re.sub(r'<ref.*?<\/ref>', '', entry)
 
 		# 「<ref name="example" />」を削除
-		s = re.sub(r'<ref\ name.*?\/>', '', s)
+		entry = re.sub(r'<ref\ name.*?\/>', '', entry)
 
 		# スペースと「'"「」『』」を削除
 		# '''皆藤 愛子'''(かいとう あいこ、[[1984年]]
-		s = s.translate(str.maketrans('', '', ' "\'「」『』'))
+		entry = entry.translate(str.maketrans('', '', ' "\'「」『』'))
 
 		# 「表記(読み」から読みを取得
-		if hyouki + "(" in s:
-			yomi = s.split(hyouki + "(")[1]
+		if hyouki + "(" in entry:
+			yomi = entry.split(hyouki + "(")[1]
 		else:
 			continue
 
@@ -198,11 +198,11 @@ def generate_jawiki_ut(article):
 		if yomi != ''.join(re.findall('[ぁ-ゔー]', yomi)):
 			continue
 
-		s = [yomi, id_mozc, id_mozc, "8000", hyouki]
+		entry = [yomi, id_mozc, id_mozc, "8000", hyouki]
 
 		with open(dicname, "a", encoding="utf-8") as dicfile:
 			fcntl.flock(dicfile, fcntl.LOCK_EX)
-			dicfile.write("\t".join(s))
+			dicfile.write("\t".join(entry))
 			dicfile.write("\n")
 			fcntl.flock(dicfile, fcntl.LOCK_UN)
 		return
@@ -219,7 +219,7 @@ with urllib.request.urlopen(url) as response:
 	id_mozc = response.read().decode()
 	id_mozc = id_mozc.split(" 名詞,一般,")[0].split("\n")[-1]
 
-subprocess.run(["wget", "-N", "https://dumps.wikimedia.org/jawiki/latest/jawiki-latest-pages-articles-multistream.xml.bz2"])
+#subprocess.run(["wget", "-N", "https://dumps.wikimedia.org/jawiki/latest/jawiki-latest-pages-articles-multistream.xml.bz2"])
 
 with open(dicname, "w", encoding="utf-8") as dicfile:
 	dicfile.write("")
