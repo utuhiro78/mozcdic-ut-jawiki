@@ -10,9 +10,8 @@ import html
 import jaconv
 import re
 import subprocess
-import urllib.request
 import unicodedata
-import subprocess
+import urllib.request
 from multiprocessing import Pool, cpu_count
 
 # ==============================================================================
