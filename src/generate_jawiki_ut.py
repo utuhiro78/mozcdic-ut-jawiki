@@ -219,7 +219,7 @@ with urllib.request.urlopen(url) as response:
 	id_mozc = response.read().decode()
 	id_mozc = id_mozc.split(" 名詞,一般,")[0].split("\n")[-1]
 
-#subprocess.run(["wget", "-N", "https://dumps.wikimedia.org/jawiki/latest/jawiki-latest-pages-articles-multistream.xml.bz2"])
+subprocess.run(["wget", "-N", "https://dumps.wikimedia.org/jawiki/latest/jawiki-latest-pages-articles-multistream.xml.bz2"])
 
 with open(dicname, "w", encoding="utf-8") as dicfile:
 	dicfile.write("")
