@@ -86,5 +86,5 @@ lines.sort()
 
 with open(filename, "w", encoding="utf-8") as dicfile:
 	dicfile.write("\n".join(lines))
-	# cat で結合するときのために最後は改行する
+	# cat 用に最後は改行
 	dicfile.write("\n")
