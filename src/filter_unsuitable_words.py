@@ -33,6 +33,7 @@ for i, word in enumerate(unsuitable_words):
 with open(filename, "w", encoding="utf-8") as dicfile:
 	for i in range(len(lines)):
 		entry = lines[i].split("\t")
+
 		for word in unsuitable_words:
 			if isinstance(word, str) and word in entry[4]:
 				entry[4] = None
