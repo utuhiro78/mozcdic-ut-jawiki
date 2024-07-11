@@ -7,8 +7,5 @@ python generate_jawiki_ut.py
 python adjust_entries.py mozcdic-ut-jawiki.txt
 python filter_unsuitable_words.py mozcdic-ut-jawiki.txt
 
-python count_word_hits.py
-python apply_word_hits.py mozcdic-ut-jawiki.txt
-
 tar cjf mozcdic-ut-jawiki.txt.tar.bz2 mozcdic-ut-jawiki.txt
 mv mozcdic-ut-jawiki.txt* ../
