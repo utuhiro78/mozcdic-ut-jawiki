@@ -23,9 +23,9 @@ with open(filename, "r", encoding="utf-8") as file:
 l2 = []
 
 for i in range(len(lines)):
-	s = lines[i].split("\t")
-	yomi = s[0]
-	hyouki = s[4]
+	entry = lines[i].split("\t")
+	yomi = entry[0]
+	hyouki = entry[4]
 
 	# 表記の全角英数を半角に変換
 	hyouki = normalize("NFKC", hyouki)
@@ -78,10 +78,12 @@ for i in range(len(lines)):
 	if n != "" and int(n) > 100:
 		continue
 
-	l2.append(yomi + "\t" + "\t".join(s[1:4]) + "\t" + hyouki)
+	entry[0] = yomi
+	entry[4] = hyouki
+	l2.append("\t".join(entry) + "\n")
 
 lines = l2
 l2 = []
 
 with open(filename, "w", encoding="utf-8") as dicfile:
-	dicfile.write("\n".join(lines))
+	dicfile.writelines(lines)
