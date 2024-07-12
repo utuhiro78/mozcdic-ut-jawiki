@@ -185,8 +185,10 @@ def generate_jawiki_ut(article):
 			continue
 
 		# 読みが「ー」で始まる場合はスキップ
+		# 読みが全てカタカナの場合はスキップ
+		# （ミュージシャン一覧(グループ)）
 		if yomi[0] == "ー" or \
-				yomi == ''.join(re.findall('[ァ-ヴー]', yomi)):
+		yomi == ''.join(re.findall('[ァ-ヴー]', yomi)):
 			continue
 
 		# 読みのカタカナをひらがなに変換
