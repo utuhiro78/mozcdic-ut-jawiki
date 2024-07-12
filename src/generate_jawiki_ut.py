@@ -89,8 +89,7 @@ def generate_jawiki_ut(article):
 
 		with open(dicname, "a", encoding="utf-8") as dicfile:
 			fcntl.flock(dicfile, fcntl.LOCK_EX)
-			dicfile.write("\t".join(entry))
-			dicfile.write("\n")
+			dicfile.write("\t".join(entry) + "\n")
 			fcntl.flock(dicfile, fcntl.LOCK_UN)
 		return
 
@@ -203,8 +202,7 @@ def generate_jawiki_ut(article):
 
 		with open(dicname, "a", encoding="utf-8") as dicfile:
 			fcntl.flock(dicfile, fcntl.LOCK_EX)
-			dicfile.write("\t".join(entry))
-			dicfile.write("\n")
+			dicfile.write("\t".join(entry) + "\n")
 			fcntl.flock(dicfile, fcntl.LOCK_UN)
 		return
 
@@ -251,10 +249,10 @@ with bz2.open("jawiki-latest-pages-articles-multistream.xml.bz2", "rt", encoding
 		pool.join()
 
 with open(dicname, "r", encoding="utf-8") as file:
-	lines = file.read().splitlines()
+	lines = file.readlines()
 
 # 重複する行を削除
 lines = sorted(list(set(lines)))
 
 with open(dicname, "w", encoding="utf-8") as file:
-	file.write("\n".join(lines))
+	file.writelines(lines)
