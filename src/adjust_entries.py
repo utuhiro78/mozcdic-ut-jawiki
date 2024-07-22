@@ -9,15 +9,15 @@ import re
 import sys
 from unicodedata import normalize
 
-targetfiles = sys.argv[1:]
+args = sys.argv[1:]
 
-if not targetfiles:
+if not args:
 	print("Usage: python script.py [FILE]")
 	sys.exit()
 
-filename = targetfiles[0]
+file_name = args[0]
 
-with open(filename, "r", encoding="utf-8") as file:
+with open(file_name, "r", encoding="utf-8") as file:
 	lines = file.read().splitlines()
 
 l2 = []
@@ -85,5 +85,5 @@ for i in range(len(lines)):
 lines = l2
 l2 = []
 
-with open(filename, "w", encoding="utf-8") as dicfile:
-	dicfile.writelines(lines)
+with open(file_name, "w", encoding="utf-8") as dict_file:
+	dict_file.writelines(lines)

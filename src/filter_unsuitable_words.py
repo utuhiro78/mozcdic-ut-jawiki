@@ -7,17 +7,17 @@
 import re
 import sys
 
-files = sys.argv[1:]
+args = sys.argv[1:]
 
-if not files:
+if not args:
 	print("Usage: python script.py [FILE]")
 	exit()
 
-filename = files[0]
+file_name = args[0]
 
 # Mozc 形式の辞書を読み込む
 # なかいまさひろ	1917	1917	6477	中居正広
-with open(filename, "r", encoding="utf-8") as file:
+with open(file_name, "r", encoding="utf-8") as file:
 	lines = file.read().splitlines()
 
 # 単語フィルタを読み込む
@@ -30,7 +30,7 @@ for i, word in enumerate(unsuitable_words):
 	if word.startswith("/"):
 		unsuitable_words[i] = re.compile(word[1:-1])
 
-with open(filename, "w", encoding="utf-8") as dicfile:
+with open(file_name, "w", encoding="utf-8") as dict_file:
 	for i in range(len(lines)):
 		entry = lines[i].split("\t")
 
@@ -43,4 +43,4 @@ with open(filename, "w", encoding="utf-8") as dicfile:
 				break
 
 		if entry[4] is not None:
-			dicfile.write("\t".join(entry) + "\n")
+			dict_file.write("\t".join(entry) + "\n")

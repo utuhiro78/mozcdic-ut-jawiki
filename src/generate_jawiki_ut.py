@@ -80,10 +80,10 @@ def generate_jawiki_ut(article):
 
 		entry = [yomi, id_mozc, id_mozc, "8000", hyouki]
 
-		with open(dicname, "a", encoding="utf-8") as dicfile:
-			fcntl.flock(dicfile, fcntl.LOCK_EX)
-			dicfile.write("\t".join(entry) + "\n")
-			fcntl.flock(dicfile, fcntl.LOCK_UN)
+		with open(dict_name, "a", encoding="utf-8") as dict_file:
+			fcntl.flock(dict_file, fcntl.LOCK_EX)
+			dict_file.write("\t".join(entry) + "\n")
+			fcntl.flock(dict_file, fcntl.LOCK_UN)
 		return
 
 	# ==============================================================================
@@ -95,7 +95,6 @@ def generate_jawiki_ut(article):
 	lines = lines.splitlines()
 
 	entry = []
-	p = 0
 
 	for i in range(len(lines)):
 		# テンプレートを削除
@@ -108,10 +107,9 @@ def generate_jawiki_ut(article):
 			continue
 
 		entry.append(lines[i])
-		p = p + 1
 
-		# 記事の量を減らす
-		if p > 99:
+		# 記事が100行になったらbreak
+		if len(entry) == 100:
 			break
 
 	lines = entry
@@ -193,17 +191,17 @@ def generate_jawiki_ut(article):
 
 		entry = [yomi, id_mozc, id_mozc, "8000", hyouki]
 
-		with open(dicname, "a", encoding="utf-8") as dicfile:
-			fcntl.flock(dicfile, fcntl.LOCK_EX)
-			dicfile.write("\t".join(entry) + "\n")
-			fcntl.flock(dicfile, fcntl.LOCK_UN)
+		with open(dict_name, "a", encoding="utf-8") as dict_file:
+			fcntl.flock(dict_file, fcntl.LOCK_EX)
+			dict_file.write("\t".join(entry) + "\n")
+			fcntl.flock(dict_file, fcntl.LOCK_UN)
 		return
 
 def main():
-	global dicname
+	global dict_name
 	global id_mozc
 
-	dicname = "mozcdic-ut-jawiki.txt"
+	dict_name = "mozcdic-ut-jawiki.txt"
 
 	# Mozc の一般名詞のID
 	url = "https://raw.githubusercontent.com/google/mozc/master/src/data/dictionary_oss/id.def"
@@ -214,8 +212,8 @@ def main():
 
 	subprocess.run(["wget", "-N", "https://dumps.wikimedia.org/jawiki/latest/jawiki-latest-pages-articles-multistream.xml.bz2"])
 
-	with open(dicname, "w", encoding="utf-8") as dicfile:
-		dicfile.write("")
+	with open(dict_name, "w", encoding="utf-8") as dict_file:
+		dict_file.write("")
 
 	article_fragment = ""
 	cache_size = 200 * 1024 * 1024
@@ -242,13 +240,13 @@ def main():
 				pool.map(generate_jawiki_ut, articles)
 			pool.join()
 
-	with open(dicname, "r", encoding="utf-8") as file:
+	with open(dict_name, "r", encoding="utf-8") as file:
 		lines = file.readlines()
 
 	# 重複する行を削除
 	lines = sorted(list(set(lines)))
 
-	with open(dicname, "w", encoding="utf-8") as file:
+	with open(dict_name, "w", encoding="utf-8") as file:
 		file.writelines(lines)
 
 if __name__ == "__main__":
