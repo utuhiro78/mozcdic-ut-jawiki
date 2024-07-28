@@ -22,23 +22,23 @@ with open(file_name, "r", encoding="utf-8") as file:
 
 # 単語フィルタを読み込む
 with open("unsuitable_words.txt", "r", encoding="utf-8") as file:
-    unsuitable_words = file.read().splitlines()
+    unsuitables = file.read().splitlines()
 
-for i, word in enumerate(unsuitable_words):
+for i in range(len(unsuitables)):
     # エントリが正規表現になっているときは正規表現を作る
-    # /\Aバカ/
-    if word.startswith("/"):
-        unsuitable_words[i] = re.compile(word[1:-1])
+    # /^バカ/
+    if unsuitables[i][0] == "/":
+        unsuitables[i] = re.compile(unsuitables[i][1:-1])
 
 with open(file_name, "w", encoding="utf-8") as dict_file:
-    for i in range(len(lines)):
-        entry = lines[i].split("\t")
+    for line in lines:
+        entry = line.split("\t")
 
-        for word in unsuitable_words:
-            if isinstance(word, str) and word in entry[4]:
+        for unsuitable in unsuitables:
+            if isinstance(unsuitable, str) and unsuitable in entry[4]:
                 entry[4] = None
                 break
-            elif isinstance(word, re.Pattern) and word.search(entry[4]):
+            elif isinstance(unsuitable, re.Pattern) and re.match(unsuitable, entry[4]):
                 entry[4] = None
                 break
 
