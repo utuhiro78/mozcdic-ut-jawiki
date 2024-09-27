@@ -67,7 +67,7 @@ def generate_jawiki_ut(article):
         return
 
     # 読みにならない文字「!?」などを削除したhyouki_stripを作る
-    hyouki_strip = hyouki.translate(str.maketrans('', '', '.!?-+*=:/・。×★☆'))
+    hyouki_strip = hyouki.translate(str.maketrans('', '', ',.!?-+*=:/・、。×★☆'))
 
     # hyouki_stripが1文字の場合はスキップ
     if len(hyouki_strip) < 2:
@@ -144,7 +144,7 @@ def generate_jawiki_ut(article):
         # 「<ref name="雑誌1" />」を削除
         line = re.sub(r'<ref\ name.*?\/>', '', line)
 
-        # スペースと「'"「」『』」を削除
+        # 表記に一致しやすくするため『』などを削除
         # '''皆藤 愛子'''(かいとう あいこ、[[1984年]]
         line = line.translate(str.maketrans('', '', ' "\'「」『』'))
 
@@ -153,6 +153,11 @@ def generate_jawiki_ut(article):
             yomi = line.split(hyouki + "(")[1]
         else:
             continue
+
+        # 表記の末尾が「。」のときは「。」を削除
+        # 「あなた。」という表記があると、「あなた。の」になって不自然
+        if hyouki[-1] == "。":
+            hyouki = hyouki[:-1]
 
         # 読みを「)」で切る
         yomi = yomi.split(")")[0]
@@ -168,6 +173,9 @@ def generate_jawiki_ut(article):
         # 読みを「/」で切る
         # ひみこ/ひめこ
         yomi = yomi.split("/")[0]
+
+        # 読みにならない文字「!?」などを削除
+        yomi = yomi.translate(str.maketrans('', '', ',.!?-+*=:・、。×★☆'))
 
         # 読みが2文字以下の場合はスキップ
         if len(yomi) < 3:
