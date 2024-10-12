@@ -1,6 +1,6 @@
 ## Overview
 
-Mozc UT Jawiki Dictionary is a dictionary generated from the [Japanese Wikipedia](https://ja.wikipedia.org/) for Mozc.
+A dictionary generated from the [Japanese Wikipedia](https://ja.wikipedia.org/) for Mozc.
 
 Thanks to the Japanese Wikipedia team.
 
@@ -12,7 +12,7 @@ Source code: Apache License, Version 2.0
 
 ## Usage
 
-Add mozcdic-ut-*.txt to dictionary00.txt and build Mozc as usual.
+Add the dictionary to dictionary00.txt and build Mozc as usual.
 
 ```
 tar xf mozcdic-ut-*.txt.tar.bz2
