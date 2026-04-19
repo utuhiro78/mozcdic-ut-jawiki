@@ -16,4 +16,4 @@ See [merge-ut-dictionaries](https://github.com/utuhiro78/merge-ut-dictionaries).
 
 https://github.com/utuhiro78/merge-ut-dictionaries/tree/main/src
 
-[HOME](http://linuxplayers.g1.xrea.com/mozc-ut.html)
+[HOME](https://utuhiro78.github.io/linuxplayers/mozc-ut.html)
